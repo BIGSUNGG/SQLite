@@ -1,6 +1,6 @@
-﻿namespace Sqlite
+﻿namespace SQLite
 {
-    partial class Form1
+    partial class SqlQueryForm
     {
         /// <summary>
         /// Required designer variable.
@@ -35,6 +35,7 @@
             ChatMessageEditBox = new TextBox();
             SendButton = new Button();
             SendMessageEditBox = new TextBox();
+            textBox1 = new TextBox();
             SuspendLayout();
             // 
             // ddToolStripMenuItem
@@ -45,15 +46,15 @@
             // AccountComboBox
             // 
             AccountComboBox.FormattingEnabled = true;
-            AccountComboBox.Location = new Point(12, 25);
+            AccountComboBox.Location = new Point(12, 38);
             AccountComboBox.Name = "AccountComboBox";
-            AccountComboBox.Size = new Size(121, 23);
+            AccountComboBox.Size = new Size(100, 23);
             AccountComboBox.TabIndex = 0;
             AccountComboBox.SelectedIndexChanged += AccountComboBox_SelectedIndexChanged;
             // 
             // AccountNameTextBox
             // 
-            AccountNameTextBox.Location = new Point(607, 25);
+            AccountNameTextBox.Location = new Point(12, 358);
             AccountNameTextBox.Name = "AccountNameTextBox";
             AccountNameTextBox.Size = new Size(100, 23);
             AccountNameTextBox.TabIndex = 1;
@@ -61,9 +62,9 @@
             // 
             // CreateAccountButton
             // 
-            CreateAccountButton.Location = new Point(713, 12);
+            CreateAccountButton.Location = new Point(12, 387);
             CreateAccountButton.Name = "CreateAccountButton";
-            CreateAccountButton.Size = new Size(75, 51);
+            CreateAccountButton.Size = new Size(100, 51);
             CreateAccountButton.TabIndex = 2;
             CreateAccountButton.Text = "Create\r\nAccount";
             CreateAccountButton.UseVisualStyleBackColor = true;
@@ -71,15 +72,17 @@
             // 
             // ChatMessageEditBox
             // 
-            ChatMessageEditBox.Location = new Point(12, 67);
+            ChatMessageEditBox.Location = new Point(139, 67);
             ChatMessageEditBox.Multiline = true;
             ChatMessageEditBox.Name = "ChatMessageEditBox";
-            ChatMessageEditBox.Size = new Size(776, 371);
+            ChatMessageEditBox.ReadOnly = true;
+            ChatMessageEditBox.ScrollBars = ScrollBars.Vertical;
+            ChatMessageEditBox.Size = new Size(649, 371);
             ChatMessageEditBox.TabIndex = 3;
             // 
             // SendButton
             // 
-            SendButton.Location = new Point(526, 25);
+            SendButton.Location = new Point(713, 25);
             SendButton.Name = "SendButton";
             SendButton.Size = new Size(75, 23);
             SendButton.TabIndex = 4;
@@ -89,24 +92,37 @@
             // 
             // SendMessageEditBox
             // 
-            SendMessageEditBox.Location = new Point(139, 25);
+            SendMessageEditBox.Location = new Point(139, 12);
+            SendMessageEditBox.Multiline = true;
             SendMessageEditBox.Name = "SendMessageEditBox";
-            SendMessageEditBox.Size = new Size(381, 23);
+            SendMessageEditBox.ScrollBars = ScrollBars.Vertical;
+            SendMessageEditBox.Size = new Size(568, 49);
             SendMessageEditBox.TabIndex = 5;
             // 
-            // Form1
+            // textBox1
+            // 
+            textBox1.Location = new Point(12, 12);
+            textBox1.Name = "textBox1";
+            textBox1.ReadOnly = true;
+            textBox1.Size = new Size(100, 23);
+            textBox1.TabIndex = 6;
+            textBox1.Text = "Sender";
+            textBox1.TextAlign = HorizontalAlignment.Center;
+            // 
+            // SqlQueryForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(textBox1);
             Controls.Add(SendMessageEditBox);
             Controls.Add(SendButton);
             Controls.Add(ChatMessageEditBox);
             Controls.Add(CreateAccountButton);
             Controls.Add(AccountNameTextBox);
             Controls.Add(AccountComboBox);
-            Name = "Form1";
-            Text = "Form1";
+            Name = "SqlQueryForm";
+            Text = "SQL Query Form";
             Load += Form1_Load;
             ResumeLayout(false);
             PerformLayout();
@@ -120,5 +136,6 @@
         private TextBox ChatMessageEditBox;
         private Button SendButton;
         private TextBox SendMessageEditBox;
+        private TextBox textBox1;
     }
 }

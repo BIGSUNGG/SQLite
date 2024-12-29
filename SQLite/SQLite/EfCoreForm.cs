@@ -9,15 +9,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Sqlite
+namespace SQLite
 {
-    public partial class Form1 : Form
+    /// <summary>
+    /// .NET EF Core Sqlite를 사용하기 위한 Winform
+    /// </summary>
+    public partial class EfCoreForm : Form
     {
-        public Form1()
+        public EfCoreForm()
         {
             InitializeComponent();
-            ChatMessageEditBox.Multiline = true;
-            ChatMessageEditBox.ScrollBars = ScrollBars.Vertical;
 
             using (SQLiteDbContext context = new SQLiteDbContext())
             {
@@ -29,7 +30,7 @@ namespace Sqlite
                 }
 
                 // 채팅 내역 불러오기
-                var chats = context.Chats.AsNoTracking().Include(c => c.Sender);
+                var chats = context.Chats.AsNoTracking().Include(c => c.Sender).OrderBy(c => c.DateTime);
                 foreach(var chat in chats)
                 {
                     AddMessage(chat);
