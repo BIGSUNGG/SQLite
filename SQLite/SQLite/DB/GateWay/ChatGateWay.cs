@@ -45,7 +45,7 @@ public class ChatGateWay
         }
     }
 
-    public static List<ChatGateWay> SelectAll()
+    public static List<ChatGateWay> SelectAll(AccountGateWay filterAccount = null, int filterCount = 0)
     {
         // DB 연결
         using (SqliteConnection connection = new SqliteConnection(ConnectionString.GetSqliteConnectionString()))
@@ -62,7 +62,13 @@ public class ChatGateWay
             List<ChatGateWay> result = new List<ChatGateWay>();
 
             SqliteCommand command = connection.CreateCommand();
-            command.CommandText = "SELECT Id, DateTime, Text, SenderId FROM Chat";
+            command.CommandText = $@"
+SELECT Id, DateTime, Text, SenderId 
+FROM Chat 
+{(filterAccount == null ? "" : $"WHERE SenderId == {filterAccount.Id}")} 
+ORDER BY DateTime DESC
+{(filterCount == 0 ? "" : $"LIMIT {filterCount}")}
+";
             SqliteDataReader reader = command.ExecuteReader();
 
             while (reader.Read())

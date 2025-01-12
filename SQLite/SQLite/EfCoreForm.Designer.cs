@@ -36,6 +36,10 @@
             SendButton = new Button();
             SendMessageEditBox = new TextBox();
             textBox1 = new TextBox();
+            FilterAccountComboBox = new ComboBox();
+            FilterText = new TextBox();
+            FilterNum = new NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)FilterNum).BeginInit();
             SuspendLayout();
             // 
             // ddToolStripMenuItem
@@ -109,11 +113,41 @@
             textBox1.Text = "Sender";
             textBox1.TextAlign = HorizontalAlignment.Center;
             // 
+            // FilterAccountComboBox
+            // 
+            FilterAccountComboBox.FormattingEnabled = true;
+            FilterAccountComboBox.Location = new Point(12, 107);
+            FilterAccountComboBox.Name = "FilterAccountComboBox";
+            FilterAccountComboBox.Size = new Size(100, 23);
+            FilterAccountComboBox.TabIndex = 7;
+            FilterAccountComboBox.SelectedIndexChanged += FilterAccountComboBox_SelectedIndexChanged;
+            // 
+            // FilterText
+            // 
+            FilterText.Location = new Point(12, 78);
+            FilterText.Name = "FilterText";
+            FilterText.ReadOnly = true;
+            FilterText.Size = new Size(100, 23);
+            FilterText.TabIndex = 8;
+            FilterText.Text = "Filter";
+            FilterText.TextAlign = HorizontalAlignment.Center;
+            // 
+            // FilterNum
+            // 
+            FilterNum.Location = new Point(12, 136);
+            FilterNum.Name = "FilterNum";
+            FilterNum.Size = new Size(100, 23);
+            FilterNum.TabIndex = 9;
+            FilterNum.ValueChanged += FilterNum_ValueChanged;
+            // 
             // EfCoreForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(FilterNum);
+            Controls.Add(FilterText);
+            Controls.Add(FilterAccountComboBox);
             Controls.Add(textBox1);
             Controls.Add(SendMessageEditBox);
             Controls.Add(SendButton);
@@ -124,6 +158,7 @@
             Name = "EfCoreForm";
             Text = "EF Core Form";
             Load += Form1_Load;
+            ((System.ComponentModel.ISupportInitialize)FilterNum).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -137,5 +172,8 @@
         private Button SendButton;
         private TextBox SendMessageEditBox;
         private TextBox textBox1;
+        private ComboBox FilterAccountComboBox;
+        private TextBox FilterText;
+        private NumericUpDown FilterNum;
     }
 }

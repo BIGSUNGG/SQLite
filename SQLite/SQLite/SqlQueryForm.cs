@@ -20,24 +20,63 @@ namespace SQLite
         {
             InitializeComponent();
 
+            FilterAccountComboBox.Items.Add("None");
+
+            LoadAllAccount();
+            LoadAllChat();
+        }
+
+        /// <summary>
+        /// 모든 계정 불러오기
+        /// </summary>
+        void LoadAllAccount()
+        {
             List<AccountGateWay> accountGateWy = AccountGateWay.SelectAll();
             foreach (var account in accountGateWy)
             {
                 AddAccountComboBox(account);
             }
+        }
 
-            List<ChatGateWay> chatGateWays = ChatGateWay.SelectAll();
+        /// <summary>
+        /// 모든 채팅 지우기
+        /// </summary>
+        void ResetAllChat()
+        {
+            ChatMessageEditBox.Text = "";
+        }
+
+        /// <summary>
+        /// 모든 채팅 불러오기
+        /// </summary>
+        void LoadAllChat()
+        {
+            ResetAllChat();
+
+            AccountGateWay filterAccount = FilterAccountComboBox.SelectedItem as AccountGateWay;
+            int filterCount = (int)FilterNum.Value;
+
+            List<ChatGateWay> chatGateWays = ChatGateWay.SelectAll(filterAccount, filterCount);
             foreach (var chat in chatGateWays)
             {
                 AddMessage(chat);
             }
         }
 
+        /// <summary>
+        /// 계정을 콤보 박스 리스트에 추가
+        /// </summary>
+        /// <param name="account"></param>
         void AddAccountComboBox(AccountGateWay account)
         {
             AccountComboBox.Items.Add(account);
+            FilterAccountComboBox.Items.Add(account);
         }
 
+        /// <summary>
+        /// DB에 메시지 추가
+        /// </summary>
+        /// <param name="sender"></param>
         void SendMessage(AccountGateWay sender)
         {
             ChatGateWay chat = new ChatGateWay();
@@ -47,9 +86,13 @@ namespace SQLite
             chat.Insert();
 
             SendMessageEditBox.Text = "";
-            AddMessage(chat);
+            LoadAllChat();
         }
 
+        /// <summary>
+        /// 채팅창에 메시지 추가
+        /// </summary>
+        /// <param name="chat"></param>
         void AddMessage(ChatGateWay chat)
         {
             ChatMessageEditBox.Text += $"[{chat.DateTime}] {chat.Sender.Name} : {chat.Text}{Environment.NewLine}";
@@ -76,7 +119,7 @@ namespace SQLite
 
             AccountNameTextBox.Text = "";
             AddAccountComboBox(account);
-        }        
+        }
 
         private void AccountNameTextBox_TextChanged(object sender, EventArgs e)
         {
@@ -90,6 +133,16 @@ namespace SQLite
                 return;
 
             SendMessage(senderAccount);
+        }
+
+        private void FilterAccountComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadAllChat();
+        }
+
+        private void FilterNum_ValueChanged(object sender, EventArgs e)
+        {
+            LoadAllChat();
         }
     }
 }

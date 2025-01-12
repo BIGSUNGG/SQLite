@@ -20,6 +20,17 @@ namespace SQLite
         {
             InitializeComponent();
 
+            FilterAccountComboBox.Items.Add("None");
+
+            LoadAllAccount();
+            LoadAllChat();
+        }
+
+        /// <summary>
+        /// 모든 계정 불러오기
+        /// </summary>
+        void LoadAllAccount()
+        {
             using (SQLiteDbContext context = new SQLiteDbContext())
             {
                 // 계정 불러오기
@@ -29,20 +40,57 @@ namespace SQLite
                     AddAccountComboBox(account);
                 }
 
+            }
+        }
+
+        /// <summary>
+        /// 모든 채팅 지우기
+        /// </summary>
+        void ResetAllChat()
+        {
+            ChatMessageEditBox.Text = "";
+        }
+
+        /// <summary>
+        /// 모든 채팅 불러오기
+        /// </summary>
+        void LoadAllChat()
+        {
+            ResetAllChat();
+
+            AccountDb filterAccount = FilterAccountComboBox.SelectedItem as AccountDb;
+            int filterCount = (int)FilterNum.Value;
+
+            using (SQLiteDbContext context = new SQLiteDbContext())
+            {
                 // 채팅 내역 불러오기
-                var chats = context.Chats.AsNoTracking().Include(c => c.Sender).OrderBy(c => c.DateTime);
-                foreach(var chat in chats)
+                var chats = context.Chats.AsNoTracking()
+                    .Include(c => c.Sender)
+                    .Where(c => filterAccount == null ? true : c.SenderId == filterAccount.Id) // filterAccount가 있다면 filterAccount가 전송한 채팅만 불러오도록
+                    .OrderByDescending(c => c.DateTime)
+                    .Take(filterCount == 0 ? int.MaxValue : filterCount); // filterCount가 0이라면 모든 채팅을 불러오도록
+
+                foreach (var chat in chats)
                 {
                     AddMessage(chat);
                 }
             }
         }
 
+        /// <summary>
+        /// 계정을 콤보 박스 리스트에 추가
+        /// </summary>
+        /// <param name="account"></param>
         void AddAccountComboBox(AccountDb account)
         {
             AccountComboBox.Items.Add(account);
+            FilterAccountComboBox.Items.Add(account);
         }
 
+        /// <summary>
+        /// DB에 메시지 추가
+        /// </summary>
+        /// <param name="sender"></param>
         void SendMessage(AccountDb sender)
         {
             using (SQLiteDbContext context = new SQLiteDbContext())
@@ -57,10 +105,14 @@ namespace SQLite
                 context.SaveChanges();
 
                 SendMessageEditBox.Text = "";
-                AddMessage(chat);
+                LoadAllChat();
             }
         }
 
+        /// <summary>
+        /// 채팅창에 메시지 추가
+        /// </summary>
+        /// <param name="chat"></param>
         void AddMessage(ChatDb chat)
         {
             ChatMessageEditBox.Text += $"[{chat.DateTime}] {chat.Sender.Name} : {chat.Text}{Environment.NewLine}";
@@ -105,6 +157,16 @@ namespace SQLite
                 return;
 
             SendMessage(senderAccount);
+        }
+
+        private void FilterAccountComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadAllChat();
+        }
+
+        private void FilterNum_ValueChanged(object sender, EventArgs e)
+        {
+            LoadAllChat();
         }
     }
 }
